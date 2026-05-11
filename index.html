@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المهندس الذكي (Vanilla UI)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- قسم الدردشة (يسار الشاشة) -->
+        <aside class="chat-section">
+            <div class="chat-header">
+                <div style="display:flex;align-items:center;gap:5px; flex:1; max-width: 70%;">
+                    🤖 <span id="currentChatName" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">مشروع جديد</span>
+                    <button id="editChatNameBtn" title="تعديل اسم المشروع" class="icon-btn-small">✏️</button>
+                    <button id="deleteChatBtn" title="حذف المشروع الحالي" class="icon-btn-small">🗑️</button>
+                    <button id="historyChatsBtn" title="سجل المشاريع" class="icon-btn-small">📂</button>
+                </div>
+                <label class="toggle-engineer" title="تفعيل وضع المهندس والتفكير العميق">
+                    <input type="checkbox" id="engineerModeToggle">
+                    <span class="slider"></span>
+                    <span class="label-text" style="font-size: 0.75rem;">المهندس 🧠</span>
+                </label>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input-area">
+                <button id="importGithubBtn" title="استيراد من GitHub" class="icon-btn">➕</button>
+                <textarea id="chatInput" placeholder="اكتب فكرتك هنا لتصميمها وبرمجتها، أو اطرح سؤالاً..."></textarea>
+                <button id="sendBtn">إرسال</button>
+            </div>
+        </aside>
+
+        <!-- قسم المعاينة وتحرير الأكواد (يمين الشاشة) -->
+        <main class="editor-section">
+            <div class="tabs" id="mainTabs">
+                <button class="tab-btn active" data-target="preview">المعاينة</button>
+                <div id="dynamicTabs" style="display:contents">
+                    <!-- يتم إضافتها برمجياً -->
+                </div>
+                <div class="tab-actions">
+                    <button id="deviceDesktopBtn" class="action-btn active" title="حاسوب">💻</button>
+                    <button id="deviceTabletBtn" class="action-btn" title="جهاز لوحي">📱</button>
+                    <button id="deviceMobileBtn" class="action-btn" title="هاتف">📱</button>
+                    <button id="copyBtn" class="action-btn" style="display:none;" title="نسخ الكود">📋 نسخ</button>
+                    <button id="downloadBtn" class="action-btn" title="تحميل المشروع">📥 تحميل ZIP</button>
+                    <button id="runBtn" class="run-btn" title="تشغيل / تحديث المعاينة">▶ تحديث</button>
+                </div>
+            </div>
+            
+            <div class="preview-container tab-content active" id="preview-content">
+                <iframe id="previewIframe" class="device-desktop" sandbox="allow-scripts allow-modals allow-forms allow-same-origin"></iframe>
+            </div>
+            
+            <div id="dynamicContents" style="display:contents; flex:1">
+               <!-- يتم إضافتها برمجياً -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="githubModal" class="modal">
+        <div class="modal-content">
+            <h3>استيراد من GitHub</h3>
+            <p style="font-size:0.85rem; color:#a6adc8; margin-bottom:15px;">أدخل رابط المستودع لنسخ الملفات وجلبها للمشروع الحالي. الملفات ستعوض الملفات بنفس الاسم.</p>
+            <input type="text" id="githubUrlInput" placeholder="https://github.com/user/repo" dir="ltr">
+            <div class="modal-actions">
+                <button id="githubImportConfirm">استيراد الملفات</button>
+                <button id="githubImportCancel">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <h3>سجل المشاريع المحفوظة</h3>
+            <div id="historyList"></div>
+            <div class="modal-actions" style="margin-top:20px;">
+                <button id="newChatSessionBtn" style="background:#a6e3a1; color:#11111b; margin-left:auto;">🌟 مشروع جديد</button>
+                <button id="historyCloseBtn">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./script.js"></script>
+</body>
+</html>
