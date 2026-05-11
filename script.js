@@ -1,4 +1,4 @@
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI } from 'https://esm.run/@google/genai';
 
 let sessions = {};
 try {
@@ -497,7 +497,23 @@ async function askAI() {
     isThinking = true;
 
     try {
-        const apiKey = process.env.GEMINI_API_KEY;
+        let apiKey;
+        try {
+            apiKey = process.env.GEMINI_API_KEY;
+        } catch(e) {
+            apiKey = null;
+        }
+        
+        if (!apiKey) {
+            apiKey = localStorage.getItem('GEMINI_API_KEY');
+            if (!apiKey) {
+                apiKey = prompt("إصدار GitHub/Vanilla: يرجى إدخال مفتاح Gemini API Key الخاص بك (سيتم حفظه محلياً في متصفحك):");
+                if (apiKey) {
+                    localStorage.setItem('GEMINI_API_KEY', apiKey);
+                }
+            }
+        }
+
         if (!apiKey) throw new Error("مفتاح API غير متوفر.");
 
         const ai = new GoogleGenAI({ apiKey });
